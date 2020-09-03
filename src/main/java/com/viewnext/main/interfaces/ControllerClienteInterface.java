@@ -21,11 +21,11 @@ public interface ControllerClienteInterface {
 	public ResponseEntity<List<String>> getNombreClientes();
 
 	@GetMapping("/getCliente")
-	public ResponseEntity<String> getClienteByName(String name);
+	public ResponseEntity<Clientes> getClienteByName(String name);
 	
 	
 	@PostMapping("/insertarCliente")
-	public ResponseEntity<String> postCliente(Clientes cliente);
+	public ResponseEntity<Clientes> postCliente(Clientes cliente);
 	
 	
 	@DeleteMapping("/deleteClientesByName")
