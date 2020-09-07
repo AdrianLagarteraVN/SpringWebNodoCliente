@@ -1,6 +1,5 @@
 package com.viewnext.main.data;
 
-import java.math.BigInteger;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,7 +20,7 @@ public class Clientes {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private BigInteger id;
+	private Long id;
 	
 	private String nombreCliente;
 	private String telefonoCliente;

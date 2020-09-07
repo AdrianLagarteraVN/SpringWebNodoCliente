@@ -20,4 +20,6 @@ public interface ServiceClienteInterface {
 	public Clientes insertarCliente(Clientes cliente);
 	
 	public int borradoClienteByName(String nombre);
+	
+	public Clientes updateCliente(Clientes cliente);
 }

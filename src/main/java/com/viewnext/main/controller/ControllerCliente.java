@@ -2,12 +2,14 @@ package com.viewnext.main.controller;
 
 import java.util.List;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.viewnext.main.data.Clientes;
 import com.viewnext.main.interfaces.ControllerClienteInterface;
@@ -42,21 +44,42 @@ public class ControllerCliente implements ControllerClienteInterface {
 
 	@Override
 	public ResponseEntity<Clientes> postCliente(Clientes cliente) {
-		Clientes clienteInsertado = servicio.insertarCliente(cliente);
-		ResponseEntity<Clientes> response = new ResponseEntity<Clientes>(clienteInsertado, HttpStatus.OK);
+		ResponseEntity<Clientes> response;
+		try {
+			Clientes clienteInsertado = servicio.insertarCliente(cliente);
+			response = new ResponseEntity<Clientes>(clienteInsertado, HttpStatus.OK);
+
+		} catch (EntityExistsException e) {
+			throw new ResponseStatusException(HttpStatus.FOUND, e.getLocalizedMessage());
+
+		}
 		return response;
 	}
 
 	@Override
 	public ResponseEntity<String> deleteClienteByName(String name) {
-		ResponseEntity<String> response;
+		ResponseEntity<String> response = null;
 		try {
-			long nDelete = servicio.borradoClienteByName(name);
+			int nDelete = servicio.borradoClienteByName(name);
 			response = new ResponseEntity<String>("Se han borrado, " + nDelete + " clientes por el nombre, " + name,
 					HttpStatus.OK);
 		} catch (EntityNotFoundException e) {
-			response = new ResponseEntity<String>("No se ha encontrado ninguna entidad", HttpStatus.NOT_FOUND);
-			return response;
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No existe la entiada a eliminar");
+
+		}
+		return response;
+	}
+
+	@Override
+	public ResponseEntity<Clientes> putCliente(Clientes cliente) {
+
+		ResponseEntity<Clientes> response = null;
+		try {
+			Clientes clienteActualizado = servicio.updateCliente(cliente);
+			response = new ResponseEntity<Clientes>(clienteActualizado, HttpStatus.OK);
+
+		} catch (EntityNotFoundException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
 		}
 		return response;
 	}

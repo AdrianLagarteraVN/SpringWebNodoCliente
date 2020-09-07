@@ -2,10 +2,10 @@ package com.viewnext.main.service;
 
 import java.util.List;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.viewnext.main.data.Clientes;
@@ -38,7 +38,12 @@ public class ServiceCliente implements ServiceClienteInterface {
 
 	@Override
 	public Clientes insertarCliente(Clientes cliente) {
-		return clienteRepository.save(cliente);
+		if (clienteRepository.existsById(cliente.getId())) {
+			throw new EntityExistsException(
+					"No se puede insertar el cliente, ya existe. Si quieres actualizarlo utiliza el metodo para actualizar esa entidad");
+		} else {
+			return clienteRepository.save(cliente);
+		}
 	}
 
 	@Override
@@ -50,6 +55,17 @@ public class ServiceCliente implements ServiceClienteInterface {
 			return nBorrado;
 		}
 
+	}
+
+	@Override
+	public Clientes updateCliente(Clientes cliente) {
+
+		if (clienteRepository.existsById(cliente.getId())) {
+			return clienteRepository.save(cliente);
+		} else {
+			throw new EntityNotFoundException(
+					"No existe la entidad que quieres actualizar, si no existe en la base de datos utiliza el metodo para insertar.");
+		}
 	}
 
 }

@@ -6,8 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.viewnext.main.data.Clientes;
 import com.viewnext.main.utils.Constants;
@@ -29,8 +31,11 @@ public interface ControllerClienteInterface {
 	public ResponseEntity<Clientes> postCliente(@RequestBody Clientes cliente);
 	
 	
-	@DeleteMapping("/deleteClientesByName")
-	public ResponseEntity<String> deleteClienteByName(String name);
+	@PutMapping("/actualizarCliente")
+	public ResponseEntity<Clientes> putCliente(@RequestBody Clientes cliente);
+	
+	@DeleteMapping("/deleteClienteByName")
+	public ResponseEntity<String> deleteClienteByName(@RequestParam String name);
 	
 	
 }
