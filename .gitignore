@@ -37,3 +37,7 @@ build/
 mvnw
 
 mvnw.cmd
+
+data/demo.trace.db
+
+data/demo.mv.db
